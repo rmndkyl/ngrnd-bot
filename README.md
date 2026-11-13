@@ -125,15 +125,41 @@ Menu interaktif:
   HASIL RUN
 ====================
 WALLET         BRAND            BEFORE  AFTER  +PTS  DAILY  TASKS  SNAG
-abdulbinjai32  digitsbt         6150    6175   +25   done   1      10
-abdulbinjai32  predictfullysbt  2450    2550   +100  +25    3      9
-andipirdaus59  digitsbt         5250    5300   +50   +25    1      10
+acc01          digitsbt         6150    6175   +25   done   1      10
+acc01          predictfullysbt  2450    2550   +100  +25    3      9
+acc02          digitsbt         5250    5300   +50   +25    1      10
 ...
   Total points       29800 → 30425 (+625)
   Daily claimed      7
   Tasks verified     18
   Failures           0
 ```
+
+### Menyelesaikan task sosial X (retweet / reply)
+
+Task `x_retweet`, `x_reply`, `x_follow` diverifikasi server terhadap akun X yang terhubung,
+jadi butuh sesi X. Alurnya:
+
+```
+1. Copy cookie dari Chrome (lihat x_sessions_input.txt untuk panduan klik)
+2. node tools/parse_x_cookies.mjs         -> x_sessions.json
+3. node tools/x_engage.mjs --dry          -> lihat rencana
+4. node tools/x_engage.mjs --all          -> kerjakan (retweet + reply + verify)
+```
+
+| Variabel | Default | Fungsi |
+|---|---|---|
+| `X_MAX_ACTIONS` | 4 | batas aksi tulis per akun per run |
+| `X_DELAY_MIN_MS` | 45000 | jeda minimum antar aksi |
+| `X_DELAY_MAX_MS` | 90000 | jeda maksimum antar aksi |
+
+> **Penting:** X membatasi jumlah posting per akun (error `344`). Kalau akun sudah dipakai bot
+> engagement lain, kuota postingnya cepat habis dan `x_engage` akan berhenti dengan pesan
+> `STOP: rate limit akun (344)`. Itu bukan bug — jalankan lagi nanti (1–2 aksi per akun per
+> 3 jam), atau kurangi aktivitas bot lain di akun tersebut.
+
+`x_engage` membaca query ID GraphQL (`CreateRetweet`, `CreateTweet`) langsung dari bundle web
+X setiap kali jalan, jadi tidak cepat rusak saat X mengganti hash.
 
 ### Jadwal harian (Windows Task Scheduler)
 
@@ -157,15 +183,25 @@ Atau cron (WSL/Linux): `0 8 * * * cd ~/LYID-BOTS/ngrnd-bot && node index.js --da
 | `x_like` | Ya | Server tidak mengecek like |
 | `youtube_like` | Ya | Server tidak mengecek like |
 | `discord_join` | Ya | Server tidak mengecek join |
-| `x_retweet` | **Manual** | Server cek repost dari akun X yang terhubung |
-| `x_reply` | **Manual** | Server cek balasan dari akun X yang terhubung |
-| `x_follow` | Manual | Server cek follow |
+| `x_retweet` | **Ya, kalau kuota X tersedia** | `tools/x_engage.mjs` — berhenti sendiri saat kena limit 344 |
+| `x_reply` | **Ya, kalau kuota X tersedia** | idem, teks reply bervariasi otomatis |
+| `x_follow` | Manual | Server cek follow (sudah selesai di semua wallet) |
 | `youtube_subscribe` | **Manual** | Server cek langganan (async, status `pending`) |
 | `youtube_comment` | **Manual** | Butuh link komentar YouTube (`contentUrl`) |
 
 Bot akan selalu menampilkan daftar task manual di akhir run, lengkap dengan URL-nya.
 
 ---
+
+## Bukti run (dari bot sendiri, bukan mockup)
+
+![nGRND bot daily run](docs/screenshots/run.png)
+
+Kartu di atas dibaca langsung dari `data/last-run.txt` hasil run sungguhan: 5 wallet × 2 brand
+(Dig It + Predictfully), 36.550 poin total. Label wallet di-mask (`acc01`–`acc05`), alamat
+dipotong, kode referral disamarkan. Pada run itu klaim harian sudah dilakukan cron sebelumnya
+di hari yang sama ("Daily sudah di-claim" + `Next`), jadi +PTS nol — bukan gagal, memang sudah
+diklaim lebih awal.
 
 ## Info project
 
