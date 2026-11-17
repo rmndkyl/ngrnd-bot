@@ -1,4 +1,25 @@
-# nGRND Gold Protocol — DSBT Auto-Farm Bot
+# nGRND Gold Protocol Bot
+
+**Versi:** 1.0.0 · **Harga:** Rp 95.000 (~$6) · **Kontak pembelian:** [@rmndkyl](https://t.me/rmndkyl)
+
+Bot auto-farm untuk **nGRND Gold Protocol DSBT** (Dynamic Soulbound Token) — dua kampanye sekaligus: **Dig It** (`digitsbt`) dan **Predictfully** (`predictfullysbt`).
+
+## Kebutuhan
+
+| Item | Detail |
+|---|---|
+| Runtime | Node.js 18+ |
+| Wallet | EVM / sesuai chain proyek (kamu sendiri) |
+| Proxy | tidak perlu |
+| Captcha | tidak perlu |
+| Akses | akun proyek yang kamu kelola sendiri |
+
+## Pembayaran
+
+E-Wallet: DANA / GoPay / ShopeePay · Bank: BCA / Seabank · Crypto: contact for wallet address.
+Pembeli menghubungi [@rmndkyl](https://t.me/rmndkyl), kirim bukti transfer, lalu terima license key.
+
+---
 
 Bot auto-farm untuk **nGRND Gold Protocol DSBT** (Dynamic Soulbound Token) — dua kampanye sekaligus:
 **Dig It** (`digitsbt`) dan **Predictfully** (`predictfullysbt`).
@@ -166,7 +187,6 @@ X setiap kali jalan, jadi tidak cepat rusak saat X mengganti hash.
 ```
 Program:   node
 Arguments: index.js --daily
-Start in:  C:\Users\<user>\LYID-BOTS\ngrnd-bot
 Trigger:   Daily, 08:00
 ```
 
@@ -234,7 +254,6 @@ ngrnd-bot/
 ├── data/
 │   └── state.json      # Riwayat run + poin terakhir per wallet
 ├── README.md
-├── CHECKPOINT.md
 └── .gitignore
 ```
 
